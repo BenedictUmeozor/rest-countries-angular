@@ -1,0 +1,49 @@
+<section class="py-8">
+  <app-container [className]="'space-y-12'">
+    <div
+      class="flex flex-col gap-y-8 lg:flex-row lg:items-center lg:justify-between"
+    >
+      <app-search
+        class="h-12 w-full lg:max-w-md"
+        (onSearch)="filterByQuery($event)"
+      ></app-search>
+      <app-select
+        [regions]="regions"
+        (onSelectChange)="filterByRegion($event)"
+      ></app-select>
+    </div>
+    @if (loading$ | async) {
+      <div
+        class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+      >
+        @for (item of [].constructor(10); track $index) {
+          <app-country-skeleton />
+        }
+      </div>
+    }
+
+    @if (data$ | async; as data) {
+      <div
+        class="grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        [class.block]="data.length === 0"
+        [class.grid]="data.length > 0"
+      >
+        @for (country of data$ | async; track $index) {
+          @defer (on viewport) {
+            <app-country [country]="country" />
+          } @loading {
+            <app-country-skeleton />
+          } @placeholder {
+            <app-country-skeleton />
+          }
+        } @empty {
+          <div class="grid h-80 w-full place-items-center">
+            <h2 class="text-center text-base font-medium">
+              No results returned for your search
+            </h2>
+          </div>
+        }
+      </div>
+    }
+  </app-container>
+</section>

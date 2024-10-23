@@ -1,0 +1,31 @@
+@if (country) {
+  <a
+    routerLink="/country/{{ country.name.common }}"
+    class="block transform rounded-md transition-transform duration-200 ease-linear hover:scale-105 max-sm:mx-auto max-sm:w-3/4"
+  >
+    <img
+      src="{{ country.flags.svg }}"
+      alt="{{ country.name.common }}"
+      class="aspect-[6.5/4] w-full max-w-full object-cover"
+    />
+    <div class="space-y-4 bg-neutral-white p-4 dark:bg-neutral-dark-blue">
+      <h3 class="line-clamp-1 text-lg font-semibold">
+        {{ country.name.common }}
+      </h3>
+      <ul class="space-y-2">
+        <li class="flex items-center gap-2">
+          Population
+          <span class="text-neutral-dark-gray">{{ country.population }}</span>
+        </li>
+        <li class="flex items-center gap-2">
+          Region
+          <span class="text-neutral-dark-gray">{{ country.region }}</span>
+        </li>
+        <li class="flex items-center gap-2">
+          Capital
+          <span class="text-neutral-dark-gray">{{ country.capital }}</span>
+        </li>
+      </ul>
+    </div>
+  </a>
+}

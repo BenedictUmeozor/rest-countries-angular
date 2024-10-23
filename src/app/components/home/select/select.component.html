@@ -1,0 +1,27 @@
+<div class="relative h-12 w-56">
+  <div
+    class="flex h-full cursor-pointer items-center justify-between rounded-md bg-neutral-white px-4 shadow dark:bg-neutral-dark-blue"
+    (click)="toggle()"
+  >
+    {{ region || 'Filter by Region' }}
+    <mat-icon class="w-5 transition-transform" [class.rotate-180]="!hidden"
+      >expand_more</mat-icon
+    >
+  </div>
+  <div
+    class="absolute left-0 top-14 z-50 w-full rounded-md bg-neutral-white shadow dark:bg-neutral-dark-blue"
+    [class.hidden]="hidden"
+  >
+    <ul class="py-2">
+      @for (value of regions; track value) {
+        <li
+          class="cursor-pointer px-6 py-2 capitalize transition-colors hover:text-gray-400 dark:hover:text-gray-400"
+          [class.text-gray-400]="value === region"
+          (click)="selectRegion(value)"
+        >
+          {{ value }}
+        </li>
+      }
+    </ul>
+  </div>
+</div>
