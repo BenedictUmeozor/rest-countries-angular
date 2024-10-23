@@ -1,0 +1,86 @@
+@if (country) {
+  <section
+    class="my-12 grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-2 lg:items-center"
+  >
+    <div>
+      <img
+        src="{{ country.flags.svg }}"
+        alt="{{ country.name.common }}"
+        class="aspect-[6/4] w-full rounded object-cover"
+      />
+    </div>
+    <div class="space-y-8">
+      <h2 class="text-2xl font-semibold lg:text-3xl">
+        {{ country.name.common }}
+      </h2>
+      <div class="gap-8 max-lg:space-y-8 lg:flex lg:items-start">
+        <ul class="flex-1 space-y-4">
+          <li class="flex items-start gap-2">
+            Native Name:
+            <span class="text-neutral-dark-gray">
+              {{ country.name.common }}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            Population:
+            <span class="text-neutral-dark-gray">
+              {{ country.population }}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            Region:
+            <span class="text-neutral-dark-gray">
+              {{ country.region }}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            Sub Region:
+            <span class="text-neutral-dark-gray">
+              {{ country.subregion }}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            Capital:
+            <span class="text-neutral-dark-gray">
+              {{ country.capital }}
+            </span>
+          </li>
+        </ul>
+
+        <ul class="flex-1 space-y-4">
+          <li class="flex items-start gap-2">
+            UN Member:
+            <span class="text-neutral-dark-gray">
+              {{ country.unMember ? 'Yes' : 'No' }}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            Currencies:
+            <span class="text-neutral-dark-gray">
+              {{ serializeCurrency() }}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            Languages:
+            <span class="text-neutral-dark-gray">
+              {{ serializeLanguages() }}
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="items-start gap-2 max-lg:space-y-4 lg:flex">
+        <h3>Border Countries:</h3>
+        @if (country.borders.length === 0) {
+          <span className="text-neutral-dark-gray"> No border countries </span>
+        } @else {
+          <div class="flex flex-wrap gap-2 gap-y-4">
+            @for (border of country.borders; track border) {
+              <app-country-borders [border]="border"></app-country-borders>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+}

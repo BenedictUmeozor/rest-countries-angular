@@ -1,0 +1,12 @@
+@if (loading$ | async) {
+  <app-skeleton [className]="'w-20 h-8'" />
+} @else {
+  @if (data$ | async; as data) {
+    <a
+      [routerLink]="['/countries', data[0].name.common]"
+      class="rounded bg-neutral-white p-2 text-sm shadow dark:bg-neutral-dark-blue"
+    >
+      {{ data[0].name.common }}
+    </a>
+  }
+}

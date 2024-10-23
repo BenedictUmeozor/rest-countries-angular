@@ -1,1 +1,18 @@
-<p>details works!</p>
+<section class="py-8">
+  <app-container [className]="'space-y-12 max-lg:max-w-3xl'">
+    <a
+      routerLink="/"
+      class="inline-flex h-8 items-center gap-2 rounded-md bg-neutral-white px-4 text-sm font-thin shadow dark:bg-neutral-dark-blue"
+    >
+      <mat-icon class="w-4">arrow_back</mat-icon>
+      <span>Back</span>
+    </a>
+    @if (loading$ | async) {
+      <app-page-skeleton />
+    } @else {
+      @if (data$ | async; as data) {
+        <app-country-details [country]="data[0]"></app-country-details>
+      }
+    }
+  </app-container>
+</section>

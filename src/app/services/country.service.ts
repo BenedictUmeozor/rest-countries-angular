@@ -6,6 +6,7 @@ import {
   catchError,
   debounceTime,
   distinctUntilChanged,
+  Observable,
   of,
   Subject,
   tap,
@@ -34,6 +35,19 @@ export class CountryService {
   private loadingSubjectByName = new BehaviorSubject<boolean>(true);
   private errorSubjectByName = new BehaviorSubject<string | null>(null);
 
+  private dataByCCACache: Map<
+    string,
+    {
+      data: Observable<Country[] | null>;
+      loading: Observable<boolean>;
+      error: Observable<string | null>;
+    }
+  > = new Map();
+
+  private dataSubjectByCCA = new BehaviorSubject<Country[] | null>(null);
+  private loadingSubjectByCCA = new BehaviorSubject<boolean>(true);
+  private errorSubjectByCCA = new BehaviorSubject<string | null>(null);
+
   data$ = this.dataSubject.asObservable();
   loading$ = this.loadingSubject.asObservable();
   error$ = this.errorSubject.asObservable();
@@ -41,6 +55,10 @@ export class CountryService {
   dataByName$ = this.dataSubjectByName.asObservable();
   loadingByName$ = this.loadingSubjectByName.asObservable();
   errorByName$ = this.errorSubjectByName.asObservable();
+
+  dataByCCA$ = this.dataSubjectByCCA.asObservable();
+  loadingByCCA$ = this.loadingSubjectByCCA.asObservable();
+  errorByCCA$ = this.errorSubjectByCCA.asObservable();
 
   constructor(private http: HttpClient) {
     this.searchQuerySubject
@@ -106,6 +124,45 @@ export class CountryService {
         }),
       )
       .subscribe();
+  }
+
+  getCountryByCCA(cca3: string):
+    | {
+        data: Observable<Country[] | null>;
+        loading: Observable<boolean>;
+        error: Observable<string | null>;
+      }
+    | undefined {
+    if (this.dataByCCACache.has(cca3)) {
+      return this.dataByCCACache.get(cca3);
+    }
+
+    const dataSubject = new BehaviorSubject<Country[] | null>(null);
+    const loadingSubject = new BehaviorSubject<boolean>(true);
+    const errorSubject = new BehaviorSubject<string | null>(null);
+
+    this.http
+      .get<Country[]>(`${this.apiUrl}/alpha/${cca3}`)
+      .pipe(
+        tap((countries) => {
+          dataSubject.next(countries);
+          loadingSubject.next(false);
+        }),
+        catchError((error) => {
+          loadingSubject.next(false);
+          errorSubject.next(error.message || 'Failed to fetch countries');
+          return of(null);
+        }),
+      )
+      .subscribe();
+
+    this.dataByCCACache.set(cca3, {
+      data: dataSubject.asObservable(),
+      loading: loadingSubject.asObservable(),
+      error: errorSubject.asObservable(),
+    });
+
+    return this.dataByCCACache.get(cca3);
   }
 
   filterByRegion(region: string, query?: string) {
