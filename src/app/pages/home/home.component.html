@@ -29,7 +29,7 @@
         [class.grid]="data.length > 0"
       >
         @for (country of data$ | async; track $index) {
-          @defer (on viewport) {
+          @defer (when !!country.flags.svg) {
             <app-country [country]="country" />
           } @loading {
             <app-country-skeleton />

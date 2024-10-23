@@ -20,7 +20,7 @@ export class CountryService {
   private dataCache: Country[] = [];
 
   private dataSubject = new BehaviorSubject<Country[] | null>(null);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
+  private loadingSubject = new BehaviorSubject<boolean>(true);
   private errorSubject = new BehaviorSubject<string | null>(null);
 
   private searchQuerySubject = new Subject<{
@@ -31,7 +31,7 @@ export class CountryService {
   private dataByNameCache = new Map<string, Country[]>();
 
   private dataSubjectByName = new BehaviorSubject<Country[] | null>(null);
-  private loadingSubjectByName = new BehaviorSubject<boolean>(false);
+  private loadingSubjectByName = new BehaviorSubject<boolean>(true);
   private errorSubjectByName = new BehaviorSubject<string | null>(null);
 
   data$ = this.dataSubject.asObservable();

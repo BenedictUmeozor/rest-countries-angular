@@ -1,6 +1,6 @@
 @if (country) {
   <a
-    routerLink="/country/{{ country.name.common }}"
+    routerLink="/countries/{{ country.name.common }}"
     class="block transform rounded-md transition-transform duration-200 ease-linear hover:scale-105 max-sm:mx-auto max-sm:w-3/4"
   >
     <img
@@ -23,7 +23,9 @@
         </li>
         <li class="flex items-center gap-2">
           Capital
-          <span class="text-neutral-dark-gray">{{ country.capital }}</span>
+          <span class="line-clamp-1 text-neutral-dark-gray">{{
+            country.capital
+          }}</span>
         </li>
       </ul>
     </div>
